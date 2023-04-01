@@ -24,6 +24,10 @@ public class Meja {
         this.pelanggan = pelanggan;
     }
 
+    public String getNamaPelanggan(){
+        return pelanggan.getNama();
+    }
+
     public Menu[] getMenu() {
         return menu;
     }
@@ -42,8 +46,17 @@ public class Meja {
         }
     }
 
+    public void deleteAllMenu(){
+        for (int i = 0; i < this.menu.length; i++) {
+            this.menu[i] = null;
+        }
+    }    
+
     // untuk mengecek apakah meja kosong
     public boolean isKosong() {
-        // EDIT DISINI
+        if(pelanggan == null){
+            return true;
+        }
+    return false;
     }
 }

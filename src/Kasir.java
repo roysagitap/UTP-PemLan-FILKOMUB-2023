@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Kasir {
     private Meja[] daftarMeja;
     private Menu[] daftarMenu;
+    
 
     public Kasir() {
         daftarMeja = new Meja[10];
@@ -18,28 +19,33 @@ public class Kasir {
         daftarMenu[4] = new Menu("Ayam Koloke", 25000);
     }
 
-    // digunakan untuk menampilkan daftar meja beserta keterangan ketersediaannya
-    // gunakan method isKosong pada class Kasir agar lebih mudah
     public void tampilkanDaftarMeja() {
-        // EDIT DISINI
+        System.out.println("Daftar meja :");
+        for(int i = 0; i < 10; i++){
+            System.out.print("Meja"+(i+1));
+            if(daftarMeja[i].isKosong()==true){
+                System.out.println(" (Kosong)");
+            }else{
+                System.out.println(" (Terisi oleh pelanggan "+daftarMeja[i].getNamaPelanggan()+")");
+            }
+        }
     }
 
-    // untuk menambahkan pelanggan pada meja tertentu
-    // jika meja kosong tambahkan pelanggan pada meja tersebut
-    // jika tidak buatlah keterangan bahwa meja sudah ada pelanggan
+
     public void tambahPelanggan(int nomorMeja, Pelanggan pelanggan) {
-        // EDIT DISINI
+        daftarMeja[nomorMeja].setPelanggan(pelanggan);
     }
 
-    // menambah pesanan menu pada nomor meja
-    // jika menu tidak ada dalam daftar maka tampilkan "Menu is null"
+
     public void tambahPesanan(int nomorMeja, Menu menu) {
-        // EDIT DISINI
+        daftarMeja[nomorMeja-1].setMenu(menu);
+        
     }
 
-    // Menghapus pelanggan
+
     public void hapusPelanggan(int nomorMeja) {
-        // EDIT DISINI
+        daftarMeja[nomorMeja-1].deleteAllMenu();
+        daftarMeja[nomorMeja-1].setPelanggan(null);
     }
 
     public int hitungHargaPesanan(int nomorMeja) {
@@ -102,16 +108,23 @@ public class Kasir {
             tampilkanDaftarFitur();
             System.out.print("Masukkan pilihan: ");
             pilihan = scanner.nextInt();
-            scanner.nextLine();
+
             switch (pilihan) {
                 case 1:
-                    // menampilkan daftar meja dengan method yang sudah ada
-                    // EDIT DISINI
+                   tampilkanDaftarMeja();
+                   break;
                 case 2:
-                    // tampilkan pesan untuk input nomor meja dan nama pelanggan untuk digunakan
-                    // pada method
-                    // jangan lupa instansiasi Pelanggan dengan nama pelanggan sesuai input
-                    // EDIT DISINI
+                    System.out.println("Masukan nomor meja: ");
+                    int nomorMeja = scanner.nextInt();
+                    if(daftarMeja[nomorMeja-1].getPelanggan()==null){
+                        System.out.println("Nama pelanggan : ");
+                        String namaPelanggan = scanner.next();
+                        Pelanggan pelanggan = new Pelanggan(namaPelanggan);
+                        tambahPelanggan(nomorMeja-1, pelanggan);
+                    }else{
+                        System.out.println("Meja telah terisi oleh "+daftarMeja[nomorMeja-1].getNamaPelanggan());
+                    }
+                    break;
                 case 3:
                     boolean stopLoop = false;
                     System.out.print("Masukkan nomor meja: ");
@@ -153,20 +166,25 @@ public class Kasir {
                     }
                     break;
                 case 4:
-                    // untuk menghapus pelanggan pada meja tertentu
-                    // tampilkan pesan untuk memasukkan nomor meja yang akan dihapus untuk digunakan
-                    // pada method hapusPelanggan()
-                    // EDIT DISINI
+                    System.out.print("Masukkan nomor meja: ");
+                    int nomorMejaHapus = scanner.nextInt();
+                        hapusPelanggan(nomorMejaHapus);
+                    
+                    
+                    break;
                 case 5:
-                    // Untuk melihat total harga pesanan pada meja tertentu
-                    // tampilkan pesan untuk memasukkan nomor meja
-                    // jangan lupa membedakan keluaran apabila pelanggan belum memesan apapun /
-                    // total harga 0
-                    // EDIT DISINI
+                    System.out.print("Masukan nomor meja : ");
+                    int nomorMejaTotal = scanner.nextInt();
+                    
+                    if(daftarMeja[nomorMejaTotal-1].getPelanggan() != null){
+                        System.out.println("Total pesanan : " +hitungHargaPesanan(nomorMejaTotal));
+                    }
+                    break;
                 case 6:
-                    // untuk melihat pesanan pada meja tertentu
-                    // tampilkan pesan untuk memasukkan nomor meja
-                    // EDIT DISINI
+                    System.out.print("Masukan nomor meja : ");
+                    int nomorMejaTampil = scanner.nextInt();
+                    tampilkanPesanan(nomorMejaTampil);
+                    break;
 
                 case 0:
                     System.out.println("Terima kasih telah menggunakan aplikasi kasir restoran!");
